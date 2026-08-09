@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.env
+jobswipe.db
+.venv/
+*.db
