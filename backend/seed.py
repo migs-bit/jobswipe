@@ -1,5 +1,8 @@
-from database import SessionLocal
+from database import SessionLocal, engine, Base
 from models.job import Job
+from models.user import User
+
+Base.metadata.create_all(bind=engine)
 
 jobs = [
         {"title": "jr software engineer", "company": "Google", "location": "San Francisco","salary": "80k-120k", "description": "your gonna be coding bro, $35/hour", "tags": "DSA, Python, Kupernetizes" },
