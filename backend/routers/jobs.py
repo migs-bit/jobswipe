@@ -3,12 +3,13 @@ from sqlalchemy.orm import Session
 from schemas.job import JobResponse, JobCreate
 from database import get_db
 from models.job import Job
+from auth import get_current_user
 
 router = APIRouter(prefix="/jobs")
 
 #Query is manipulation of data from a database table, add,delete,edit table
 
-@router.get("/",response_model=list[JobResponse])
+@router.get("/",response_model=list[JobResponse], dependencies=[Depends(get_current_user)])
 def getJobList(db: Session = Depends(get_db)):
     jobs = db.query(Job).all()
     return jobs
