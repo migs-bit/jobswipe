@@ -29,4 +29,9 @@ def create_swipe(swipe: SwipeCreate, db: Session = Depends(get_db), current_user
     db.refresh(new_swipe)
 
     return new_swipe
+
+@router.get("", response_model=list[SwipeResponse])
+def get_user_swipes(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
+    swipes = db.query(Swipe).filter(Swipe.user_id == current_user.id).all()
+    return swipes 
         
