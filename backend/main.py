@@ -1,7 +1,6 @@
 from fastapi import FastAPI
-from routers import jobs, users
+from routers import jobs, users, swipes
 from database import engine, Base
-from models import job
 
 """
 Base: tracks all models defined
@@ -14,6 +13,7 @@ Base.metadata.create_all(bind=engine)
 app = FastAPI()
 app.include_router(jobs.router, prefix='/api/v1')
 app.include_router(users.router, prefix='/api/v1')
+app.include_router(swipes.router, prefix='/api/v1')
 
 @app.get("/")
 def home():
