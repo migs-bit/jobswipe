@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from routers import jobs, users, swipes
+from routers import jobs, users, swipes, resumes
 from database import engine, Base
 
 """
@@ -14,6 +14,7 @@ app = FastAPI()
 app.include_router(jobs.router, prefix='/api/v1')
 app.include_router(users.router, prefix='/api/v1')
 app.include_router(swipes.router, prefix='/api/v1')
+app.include_router(resumes.router, prefix='/api/v1')
 
 @app.get("/")
 def home():
