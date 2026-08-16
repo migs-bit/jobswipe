@@ -4,3 +4,5 @@ __pycache__/
 jobswipe.db
 .venv/
 *.db
+uploads/resumes/*
+!uploads/resumes/.gitkeep
