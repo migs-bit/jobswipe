@@ -15,3 +15,9 @@ class ResumeResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class AnalyzeRequest(BaseModel):
+    job_id: int
+
+class AnalyzeResponse(BaseModel):
+    suggestions: str
