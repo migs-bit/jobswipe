@@ -1,5 +1,5 @@
-import bcrypt, jwt, os
-from dotenv import load_dotenv
+import bcrypt, jwt
+from config.settings import settings
 from datetime import datetime, timedelta
 from fastapi import HTTPException, Depends
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
@@ -8,7 +8,6 @@ from database import get_db
 from sqlalchemy.orm import Session
 
 security = HTTPBearer() #creates security scheme for token extraction
-load_dotenv()           # allows .env file to be read
 
 def hash_password(password: str) ->str:
     bpwd = password.encode()                #convert pwd to byte
@@ -25,7 +24,7 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
     return is_pwd
 
 def create_access_token(user_id: int, role: str) -> str:
-    secret = os.getenv("JWT_SECRET_KEY")                        #grab secret key from env file 
+    secret = settings.JWT_SECRET_KEY                            #grab secret key from env file 
     payload = {                                                 #payload = data inside the token
         "user_id": user_id, 
         "role": role,
@@ -35,14 +34,14 @@ def create_access_token(user_id: int, role: str) -> str:
     # 1. Putting payload into the middle
     # 2. Creating a signature using secret key
     # 3. Combining into: header.payload.signature
-    encoded_jwt=jwt.encode(payload, secret, algorithm='HS256')
+    encoded_jwt=jwt.encode(payload, secret, algorithm=settings.JWT_ALGORITHM)
     return encoded_jwt
 
 def verify_token(credentials: HTTPAuthorizationCredentials = Depends(security)) ->dict:
-    secret = os.getenv("JWT_SECRET_KEY")
+    secret = settings.JWT_SECRET_KEY
     token = credentials.credentials                                             #HTTPBearer auto extracts token from auth header
     try:
-        payload = jwt.decode(token, secret, algorithms=['HS256'])               #try to decode the client request header by verifying signature
+        payload = jwt.decode(token, secret, algorithms=settings.JWT_ALGORITHM)               #try to decode the client request header by verifying signature
         return payload                                                          #return userid and role
     except jwt.ExpiredSignatureError:                                           
         raise HTTPException(status_code=401, detail="Token expired")

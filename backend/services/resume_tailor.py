@@ -1,6 +1,6 @@
 from openai import OpenAI
 from dotenv import load_dotenv
-import os
+from config.settings import settings
 
 load_dotenv()
 
@@ -21,8 +21,8 @@ Rules:
 
 def analyze_resume(resume_text: str, job_description: str) -> str:
     client = OpenAI(
-        api_key=os.getenv("DEEPSEEK_API_KEY"),
-        base_url=os.getenv("DEEPSEEK_BASE_URL")
+        api_key=settings.DEEPSEEK_API_KEY,
+        base_url=settings.DEEPSEEK_BASE_URL
     )
 
     response = client.chat.completions.create(

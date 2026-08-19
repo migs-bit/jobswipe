@@ -8,7 +8,7 @@ from models.job import Job
 from auth import get_current_user
 from io import BytesIO
 from pypdf import PdfReader
-import os
+from config.settings import settings
 
 router = APIRouter(prefix="/resumes")
 
@@ -33,7 +33,7 @@ async def upload_resume(name: str = Form(...),
     if existing:
         raise HTTPException(status_code=400, detail='resume already in the system')
 
-    filePath = f"uploads/resumes/user_{current_user.id}_{file.filename}"
+    filePath = f"{settings.UPLOAD_DIR}/user_{current_user.id}_{file.filename}"
     with open(filePath, 'wb') as f:
         f.write(contents)
 

@@ -1,10 +1,11 @@
 from sqlalchemy import create_engine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker
+from config.settings import settings
 
 
 #specifing where the database lives and what type it is, dont need to change code when changing database systems
-DATABASE_URL = "sqlite:///./jobswipe.db"
+DATABASE_URL = settings.DATABASE_URL
 # allows for a connection pool of sessions without needing to make new ones, lazy evaluates connections 
 engine = create_engine(DATABASE_URL)
 #manages connection pool
